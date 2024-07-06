@@ -7,18 +7,18 @@
       <h3>Basic Info</h3>
       <input v-model="contestInfo" type="text" >
       <h3>Language</h3>
-      <input v-model="contestlang" type="text" >
+      <input v-model="contestLang" type="text" >
 
       <div class="section">
       <div class="input-group">
         <h3>Start date</h3>
-        <input v-model="startdate" type="text" >
+        <input v-model="startDate" type="text" >
         <h3>Index pages</h3>
-        <textarea v-model="indexpages" rows="5"></textarea>
+        <textarea v-model="indexPages" rows="5"></textarea>
       </div>
       <div class="input-group">
         <h3>End date</h3>
-        <input v-model="enddate" type="text" >
+        <input v-model="endDate" type="text" >
         <h3>Admins</h3>
         <textarea v-model="admins" rows="5"></textarea>
       </div>
@@ -49,28 +49,29 @@
   </template>
   
   <script setup>
+  import  axios  from 'axios';
   import { ref } from 'vue';
   
     const contestInfo = ref('');
-    const contestlang = ref('');
-    const startdate = ref('');
-    const indexpages = ref('');
-    const enddate = ref('');
+    const contestLang = ref('');
+    const startDate = ref('');
+    const indexPages = ref('');
+    const endDate = ref('');
     const admins = ref('');
     const stov = ref('');
     const vtop = ref('');
 
     const post = async () => {
         try {
-            const response = await axios.post('', {
-            contestInfo: contestInfo.value,
-            contestLang: contestLang.value,
-            startDate: startDate.value,
-            indexPages: indexPages.value,
-            endDate: endDate.value,
+            const response = await axios.post('http://127.0.0.1:5000/contest/create', {
+            name: contestInfo.value,
+            language: contestLang.value,
+            start_date: startDate.value,
+            book_names: indexPages.value,
+            end_date: endDate.value,
             admins: admins.value,
-            stov: stov.value,
-            vtop: vtop.value
+            proofread_points: stov.value,
+            validate_points: vtop.value
             });
             
             console.log('Response from API:', response.data);
