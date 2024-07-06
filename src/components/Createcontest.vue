@@ -7,18 +7,18 @@
       <h3>Basic Info</h3>
       <input v-model="contestInfo" type="text" >
       <h3>Language</h3>
-      <input v-model="contestLang" type="text" >
+      <input v-model="contestLang" type="text" maxlength="3" >
 
       <div class="section">
       <div class="input-group">
         <h3>Start date</h3>
-        <input v-model="startDate" type="text" >
+        <input v-model="startDate" type="date" >
         <h3>Index pages</h3>
         <textarea v-model="indexPages" rows="5"></textarea>
       </div>
       <div class="input-group">
         <h3>End date</h3>
-        <input v-model="endDate" type="text" >
+        <input v-model="endDate" type="date" >
         <h3>Admins</h3>
         <textarea v-model="admins" rows="5"></textarea>
       </div>
