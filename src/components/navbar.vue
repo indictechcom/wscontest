@@ -1,3 +1,17 @@
+<script setup>
+import  axios  from 'axios';
+import { ref } from 'vue';
+
+
+const login = async() => {
+  const auth = await axios.get('http://192.168.239.1:5000/login');
+  if(auth.data = "login-success"){
+    this.$router.push('/contest');
+  }
+}
+
+
+</script>
 
 
 <template>
@@ -16,8 +30,11 @@
                     <router-link to="/Graph" class="nav-link">Graph</router-link>
                 </li>
             </ul>
+            
         </div>
+        <a class="button" href="http://192.168.239.1:5000/login">Login</a>
         </nav>
+        
         <router-view></router-view>
     <!-- </div> -->
     
@@ -49,6 +66,30 @@ nav {
   text-align: center;
   align-items: center;
 }
+
+.create{
+        background-color: #007bff00;
+        color: rgb(51, 255, 0);
+        border: none;
+        border-radius: 4px;
+        border-color: green;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-left: auto;
+    }
+
+.button {
+    padding: 1px 6px;
+    border: 1px outset buttonborder;
+    border-radius: 3px;
+    border-color: #20a200f1;
+    color: #20a200f1;
+    background-color: #fafa0c;
+    text-decoration: none;
+    float: right;
+}
+
 
 .navbar-nav {
   display: flex;

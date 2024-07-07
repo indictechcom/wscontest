@@ -63,7 +63,7 @@
 
     const post = async () => {
         try {
-            const response = await axios.post('http://127.0.0.1:5000/contest/create', {
+            const response = await axios.post('http://192.168.239.1:5000/contest/create', {
             name: contestInfo.value,
             language: contestLang.value,
             start_date: startDate.value,

@@ -52,7 +52,9 @@
         </thead>
         <tbody>
             <tr v-for="row in sortedRows" :key="row.id">
-                <td>{{ row.name }}</td>
+                <td>
+                    <button class = name @click="details">{{ row.name }}</button>
+                </td>
                 <td>{{ row.project }}</td>
                 <td>{{ row.startDate }}</td>
                 <td>{{ row.endDate }}</td>
@@ -139,6 +141,11 @@
 
     th, td {
     text-align: center;
+    }
+
+    .name{
+        background-color: #00000000;
+        color: #007bff;
     }
 
     .search-box {
@@ -247,6 +254,9 @@ export default {
       this.sortField = field;
       this.sortOrder = order;
     },
+    details(){
+        this.$router.push('/Contestdetails');
+    }
     },
     mounted() {
         this.filteredRows = this.rows;
