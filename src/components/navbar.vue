@@ -17,7 +17,7 @@ const login = async() => {
 <template>
     <!-- <div id="navigation"> -->
         <nav class="navbar">
-        <a class="contest" href="#">Wikisource contest</a>
+        <a class="title" href="#">Wikisource contest</a>
         <div class="navbar-nav">
             <ul class="navbar-items">
                 <li class="navbar-item">
@@ -59,7 +59,7 @@ nav {
   position: fixed;
   width: 100%;
   height: 60px;
-  background-color: #fafa0c;
+  background-color: #006699;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   display: flex;
@@ -81,20 +81,23 @@ nav {
 
 .button {
     padding: 1px 6px;
-    border: 1px outset buttonborder;
-    border-radius: 3px;
-    border-color: #20a200f1;
-    color: #20a200f1;
-    background-color: #fafa0c;
+    color: #ffffffcd;
+    font-weight: bold;
+    margin-right: 1%;
     text-decoration: none;
     float: right;
 }
 
+.navbar-center {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
 
 .navbar-nav {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .navbar-items {
@@ -111,7 +114,7 @@ nav {
 
 .nav-link {
   text-decoration: none;
-  color: #000000cd;
+  color: #ffffffcd;
   font-weight: normal;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: medium
@@ -120,6 +123,16 @@ nav {
 .contest {
   text-decoration: none;
   color: #000000;
+  font-weight: bold;
+  text-align: center;
+  font-size: x-large;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 10px;
+}
+
+.title {
+  text-decoration: none;
+  color: #fffffffa;
   font-weight: bold;
   text-align: center;
   font-size: x-large;
