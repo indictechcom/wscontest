@@ -98,14 +98,16 @@ export default {
     };
   },
   mounted() {
-    axios.get(API_URL+"/contest/"+1)
-    .then(response => {
+    // const contestId = this.$route.params.id;
+
+    // Make GET request using the emitted URL
+    axios.get(API_URL + "/contest/" + 1)
+      .then(response => {
         const data = response.data;
         this.administrators = data.adminstrators;
         this.books = data.books;
         this.contestDetails = data.contest_details;
         this.users = data.users;
-        this.$root.$on('emit-url', this.handleEmitUrl);
       })
       .catch(error => {
         console.error('API call failed:', error);
@@ -113,23 +115,6 @@ export default {
   },
 
 
-methods: {
-  handleEmitUrl(url) {
-      // Make GET request using the emitted URL
-      axios.get(url)
-        .then(response => {
-          const data = response.data;
-          this.administrators = data.adminstrators;
-          this.books = data.books;
-          this.contestDetails = data.contest_details;
-          this.users = data.users;
-        })
-        .catch(error => {
-          console.error('API call failed:', error);
-        });
-    }
-    
-}
 }
 
 </script>
