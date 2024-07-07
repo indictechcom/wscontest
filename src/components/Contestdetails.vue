@@ -87,6 +87,7 @@
 <script>
 
 import axios from 'axios';
+import Contest from './Contest.vue';
 
 export default {
   name: 'Contestdetails',
@@ -143,7 +144,7 @@ this.administrators = data.adminstrators;
         this.books = data.books;
         this.contestDetails = data.contest_details;
         this.users = data.users;
-
+        this.$root.$on('emit-url', this.handleEmitUrl);
     // axios.get('')
     // .then(response => {
     //     const data = response.data;
@@ -159,6 +160,20 @@ this.administrators = data.adminstrators;
 
 
 methods: {
+  handleEmitUrl(url) {
+      // Make GET request using the emitted URL
+      axios.get(url)
+        .then(response => {
+          const data = response.data;
+          this.administrators = data.adminstrators;
+          this.books = data.books;
+          this.contestDetails = data.contest_details;
+          this.users = data.users;
+        })
+        .catch(error => {
+          console.error('API call failed:', error);
+        });
+    }
     
 }
 }

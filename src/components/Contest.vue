@@ -53,7 +53,7 @@
         <tbody>
             <tr v-for="row in sortedRows" :key="row.id">
                 <td>
-                    <button class = name @click="details">{{ row.name }}</button>
+                    <button class = name @click="details(row.id)">{{ row.name }}</button>
                 </td>
                 <td>{{ row.project }}</td>
                 <td>{{ row.startDate }}</td>
@@ -254,8 +254,9 @@ export default {
       this.sortField = field;
       this.sortOrder = order;
     },
-    details(){
+    details(next){
         this.$router.push('/Contestdetails');
+        this.$emit('variable-passed', next);
     }
     },
     mounted() {
