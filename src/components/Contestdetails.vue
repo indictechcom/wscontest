@@ -49,6 +49,37 @@
     <h3>Proofread</h3>
     <hr/>
 
+  <table id="proofread">
+  <thead>
+
+    <tr>
+      <th>Users</th>
+      <th>Pages</th>
+      <th>Points</th>
+      <th>Proofread Count</th>
+      <th>Validated Count</th>
+    </tr>
+
+  </thead>
+  <tbody>
+    <tr v-for="(user, index) in users" :key="index">
+          <td>{{ Object.keys(user)[0] }}</td>
+          <td>
+            <ul>
+              <li v-for="(page, pageIndex) in user[Object.keys(user)[0]].pages" :key="pageIndex">
+                {{ page.page_name }}
+              </li>
+            </ul>
+          </td>
+          <td>{{ user[Object.keys(user)[0]].points }}</td>
+          <td>{{ user[Object.keys(user)[0]].proofread_count }}</td>
+          <td>{{ user[Object.keys(user)[0]].validated_count }}</td>
+      </tr>
+
+  </tbody>
+
+</table>
+
 
     </div>
 </template>
@@ -139,6 +170,39 @@ methods: {
     padding-top: 70px;
     color: black
   }
+
+
+  #proofread {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#proofread th {
+  background-color: #f2f2f2;
+  color: #333;
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+#proofread td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+
+#proofread thead th {
+  font-weight: bold;
+}
+
+#proofread tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+#proofread tbody tr:hover {
+  background-color: #e0e0e0;
+}
 
 
 </style>

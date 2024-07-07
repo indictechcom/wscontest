@@ -181,7 +181,14 @@ export default {
  <template>
     <div class="graph-container">
       <div class="input-container">
-        <input v-model="graphTitle" type="text" placeholder="Enter graph title" />
+        
+        <select v-model="selectedField" @change="fetch" class="form-control">
+        <option disabled value="">Select a field</option>
+        <option v-for="(field, index) in dropdownfields" :key="index" :value="field.id">
+          {{ field.name }}
+        </option>
+        </select>
+
         <button @click="fetch">Get Graph</button>
       </div>
       <div class="instr">
@@ -204,13 +211,24 @@ export default {
         xValues: ref([]),
         yValues: ref([]),
         barColors: ref([]),
-        chart: null
+        chart: null,
+        dropdownfields: ref([]),
+        selection: null
       };
     },
 
     
+  async mounted () {
+    await axios.get('')
+    .then(response => {
+      this.dropdownfields = response.data;
+    }
 
-    methods: {
+    )
+
+  },
+
+  methods: {
 
         fetch: async () => {
   try {
@@ -300,6 +318,24 @@ export default {
     max-width: 1000px;
     height: 500px;
   }
+
+
+select.form-control {
+padding: 10px;
+margin-right: 10px;
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 16px;
+width: 100%; /* Automatically adjusts width based on content */
+  max-width: 400px;
+background-color: white; /* Background color */
+color: #555; /* Text color */
+}
+
+select.form-control:focus {
+  outline: none; /* Remove outline on focus */
+  border-color: #007bff; /* Change border color on focus */
+}
   </style>
   
                                           
