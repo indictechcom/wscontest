@@ -72,7 +72,13 @@
             admins: admins.value,
             proofread_points: stov.value,
             validate_points: vtop.value
-            });
+            },
+            {
+              withCredentials: true ,headers: {
+                'Content-Type': 'application/json'
+              }
+            }
+          );
             
             console.log('Response from API:', response.data);
         } catch (error) {
