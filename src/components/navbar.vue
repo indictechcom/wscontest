@@ -1,10 +1,11 @@
 <script setup>
 import  axios  from 'axios';
 import { ref } from 'vue';
-
+import API_URL from "../globals.js";
+const loginUrl = ref(`${API_URL}/login`);
 
 const login = async() => {
-  const auth = await axios.get('http://192.168.239.1:5000/login');
+  const auth = await axios.get(API_URL+ '/login');
   if(auth.data = "login-success"){
     this.$router.push('/contest');
   }
@@ -32,12 +33,11 @@ const login = async() => {
             </ul>
             
         </div>
-        <a class="button" href="http://192.168.239.1:5000/login">Login</a>
+    <a class="button" id="loginButton" :href="loginUrl">Login</a>
         </nav>
         
         <router-view></router-view>
     <!-- </div> -->
-    
 </template>
 
 <style scoped>

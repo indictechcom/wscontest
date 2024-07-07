@@ -4,9 +4,9 @@
       <br>
       <hr />
       <br>
-      <h3>Basic Info</h3>
+      <h3>Contest Name</h3>
       <input v-model="contestInfo" type="text" >
-      <h3>Language</h3>
+      <h3>Language (ISO Code)</h3>
       <input v-model="contestLang" type="text" maxlength="3" >
 
       <div class="section">
@@ -51,6 +51,7 @@
   <script setup>
   import  axios  from 'axios';
   import { ref } from 'vue';
+  import API_URL from "../globals.js";
   
     const contestInfo = ref('');
     const contestLang = ref('');
@@ -63,7 +64,7 @@
 
     const post = async () => {
         try {
-            const response = await axios.post('http://192.168.239.1:5000/contest/create', {
+            const response = await axios.post(API_URL + '/contest/create', {
             name: contestInfo.value,
             language: contestLang.value,
             start_date: startDate.value,

@@ -25,21 +25,11 @@
                     </div>
                     </div>
                     </th>
-                <th>
-                    <div class="row">
-                    <span>Project</span>
-                    <div class="coloumn">
-                        <button @click="sortBy('project', 'asc')" :class="{ 'active': sortField === 'project' && sortOrder === 'asc' }">&#9650;</button>
-                        <button @click="sortBy('project', 'desc')" :class="{ 'active': sortField === 'project' && sortOrder === 'desc' }">&#9660;</button>
-                
-                    </div>
-                    </div>
-                    </th>
                 <th>Start date</th>
                 <th>End date</th>
                 <th>
                     <div class="row">
-                    <span>Created on</span>
+                    <span>Contest Status</span>
                     <div class="coloumn">
                         <button @click="sortBy('createdOn', 'asc')" :class="{ 'active': sortField === 'createdOn' && sortOrder === 'asc' }">&#9650;</button>
                         <button @click="sortBy('createdOn', 'desc')" :class="{ 'active': sortField === 'createdOn' && sortOrder === 'desc' }">&#9660;</button>
@@ -55,10 +45,9 @@
                 <td>
                     <button class = name @click="details(row.id)">{{ row.name }}</button>
                 </td>
-                <td>{{ row.project }}</td>
-                <td>{{ row.startDate }}</td>
-                <td>{{ row.endDate }}</td>
-                <td>{{ row.createdOn }}</td>
+                <td>{{ row.start_date }}</td>
+                <td>{{ row.end_date }}</td>
+                <td>{{ row.status }}</td>
             </tr>
         </tbody>
     </table>
@@ -204,6 +193,7 @@
 <script>
 
 import axios from 'axios';
+import API_URL from '../globals.js';
 
 export default {
   name: 'Contest',
@@ -260,15 +250,14 @@ export default {
     }
     },
     mounted() {
-        this.filteredRows = this.rows;
-        // axios.get('')
-        // .then(response => {
-        //     this.rows = response.data;
-        //     this.filteredRows = this.rows;
-        // })
-        // .catch(error => {
-        //     console.error('Error fetching data:', error);
-        // });
+        axios.get(API_URL + "/contests")
+        .then(response => {
+            this.rows = response.data;
+            this.filteredRows = this.rows;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
     },
     watch: {
         searchQuery(newVal) {
