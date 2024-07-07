@@ -56,9 +56,10 @@
   
   <style scoped>
 
+
+
     .createbutton{
         background-color: #007bff;
-        color: white;
         border: none;
         border-radius: 4px;
         padding: 10px 20px;
@@ -66,6 +67,8 @@
         cursor: pointer;
         margin-left: auto;
     }
+
+    
 
     .contest {
     width: 100vw;
