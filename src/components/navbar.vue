@@ -18,7 +18,7 @@ const login = async() => {
 <template>
     <!-- <div id="navigation"> -->
         <nav class="navbar">
-        <a class="title" href="#">Wikisource contest</a>
+        <a class="title">Wikisource contest</a>
         <div class="navbar-nav">
             <ul class="navbar-items">
                 <li class="navbar-item">

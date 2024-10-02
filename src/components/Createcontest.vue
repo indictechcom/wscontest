@@ -90,8 +90,9 @@
   
   <style scoped>
   .create-contest {
-    padding-top: 70px;
-    color: black
+    margin-top: 7.5rem;
+    color: black;
+    padding: 5rem 0;
   }
 
   

@@ -16,15 +16,15 @@
             <h1>Contests</h1>
         </section> -->
         <section class="table_body">
-            <table id="Content table">
+        <table id="Content table">
         <thead>
             <tr>
                 <th>
                     <div class="row">
                     <span>Name</span>
                     <div class="coloumn">
-                        <button @click="sortBy('name', 'asc')" :class="{ 'active': sortField === 'name' && sortOrder === 'asc' }">&#9650;</button>
-                        <button @click="sortBy('name', 'desc')" :class="{ 'active': sortField === 'name' && sortOrder === 'desc' }">&#9660;</button>
+                        <button class="sortButton" @click="sortBy('name', 'asc')" :class="{ 'active': sortField === 'name' && sortOrder === 'asc' }">&#9650;</button>
+                        <button class="sortButton" @click="sortBy('name', 'desc')" :class="{ 'active': sortField === 'name' && sortOrder === 'desc' }">&#9660;</button>
                     </div>
                     </div>
                 </th>
@@ -34,8 +34,8 @@
                     <div class="row">
                     <span>Contest Status</span>
                     <div class="coloumn">
-                        <button @click="sortBy('createdOn', 'asc')" :class="{ 'active': sortField === 'createdOn' && sortOrder === 'asc' }">&#9650;</button>
-                        <button @click="sortBy('createdOn', 'desc')" :class="{ 'active': sortField === 'createdOn' && sortOrder === 'desc' }">&#9660;</button>
+                        <button class="sortButton" @click="sortBy('createdOn', 'asc')" :class="{ 'active': sortField === 'createdOn' && sortOrder === 'asc' }">&#9650;</button>
+                        <button class="sortButton" @click="sortBy('createdOn', 'desc')" :class="{ 'active': sortField === 'createdOn' && sortOrder === 'desc' }">&#9660;</button>
                 
                     </div>
                     </div>
@@ -64,27 +64,29 @@
   </template>
   
   <style scoped>
-
-
-
-    .createbutton{
-        background-color: #007bff;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-left: auto;
-        position: relative;
-        right: 4.9rem;
-        top: 2rem;
-    }
-
-    
-
-    .contest {
-    width: 100vw;
+  .sortButton {
+    scale: .8;
+    margin: 0;
+    padding: 0;
+  }
+  .createbutton {
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: auto;
+    position: relative;
+    top: 2rem;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .contest {
+    width: 80vw;
     background-color: white;
+    position: relative;
     min-height: 100vh;
     padding-top: 60px;
     box-sizing: border-box;
@@ -92,205 +94,180 @@
     flex-direction: column;
     align-items: flex-start;
     margin: 0;
-    padding: 0px;
-    }
-
-    h2 {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  h2 {
     margin-bottom: 10px;
-    }
-
-    p {
-    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+  }
+  
+  p {
     font-size: 18px;
-    }
-
-    /*table, th, td{
-        padding: 1rem;
-        border-collapse: collapse;
-    }
-
-    td{
-        height: 11%;
-    }
-
-    main.table{
-        width: 82vw;
-        height: 90vh;
-        background-color: ;
-        box-shadow: 0 .4rem .8rem #0005;
-        border-radius: .8rem;
-    }
-
-    .table_header{
-        width: 100%;
-        height: 10%;
-        padding: .8rem 1rem;
-    }
-
-    .table_body{
-        width: 75%;
-        max-height: calc(70% - .8rem);
-        margin: .1rem auto;
-        border-radius: .6 rem;
-        background-color: #d6d6d622
-    }
-
-    table{
-        width: 100%;
-    }
-
-    thead th {
-        position: sticky;
-        top: 0;
-        left: 0;
-        background-color: #d6d6d64f;
-    }
-
-    tbody tr:nth-child(even){
-        background-color: #206ec256;
-    }
-
-    tbody tr:hover{
-        background-color: #ffffffbc
-    }*/
-
-    thead th {
-        position: sticky;
-        top: 0;
-        left: 0;
-        background-color: #d6d6d64f;
-    }
-
-    .status-completed {
-        padding: 0.2rem 0.5rem; /* Decreased padding */
-        border-radius: 0.5rem; /* Adjusted border-radius for a smaller effect */
-        background-color: #9bef51;
-        text-align: center;
-        display: inline-block;
-    }
-
-    .status-running {
-        padding: 0.2rem 0.5rem; /* Decreased padding */
-        border-radius: 0.5rem; /* Adjusted border-radius for a smaller effect */
-        background-color: #006b21;
-        text-align: center;
-        display: inline-block;
-    }
-
-    main.table{
-        width: 95%;
-        box-shadow: 0 .4rem .8rem #0005;
-        border-radius: .8rem;
-    }
-
-    table {
+    color: #333;
+  }
+  
+  main.table {
+    width: 100%; /* Reduce table width */
+    box-shadow: 0 .4rem .8rem #0005;
+    border-radius: .8rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+  
+  table {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Arial', sans-serif;
-    }
-
-    th, td {
-    padding: 12px;
+    margin: 0;
+    table-layout: fixed;
+  }
+  
+  th, td {
+    padding: 8px;
     text-align: left;
     border-bottom: 1px solid #ddd;
-    }
-
-    
-    th {
+    font-size: 14px;
+  }
+  
+  th {
     background-color: #f2f2f2;
-    }
-
-    tr:hover {
-    background-color: #f5f5f5;
-    }
-
-    thead {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  thead th {
+    position: sticky;
+    top: 0;
     background-color: #006699ea;
-    }
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    color: white;
+  }
 
-    tbody tr:nth-child(even) {
+  th:nth-child(1), td:nth-child(1) {
+  width: 30%;
+}
+
+th:nth-child(2), td:nth-child(2), 
+th:nth-child(3), td:nth-child(3), 
+th:nth-child(4), td:nth-child(4) {
+  width: 23.33%;
+}
+  
+  tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  tbody tr:nth-child(even) {
     background-color: #00669987;
-    }
-
-    tbody tr:nth-child(odd) {
+  }
+  
+  tbody tr:nth-child(odd) {
     background-color: #fff;
-    }
-
-    th, td {
+  }
+  
+  th, td {
     border: 1px solid #ddd;
-    }
-
-    table {
-    margin-top: 20px;
-    }
-
-    th, td {
+    font-size: 13px;
+  }
+  
+  th, td {
     text-align: center;
-    }
-
-    .name{
-        /* background-color: #00000000;
-        color: #007bff; */
-        background-color: transparent;
-        color: #007bff;
-        border: none;
-        cursor: pointer;
-    }
-
-    .name:hover {
-        text-decoration: underline;
-    }
-
-    .search-box {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-        }
-
-    .search-box input {
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        width: 200px;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
-
-    .row{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .coloumn{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-left: 10px;
-    }
-
-    
-
-    .row span {
-        flex-grow: 1;
-        text-align: center;
-    }
-
-    
-
-    button {
-        margin-left: 5px;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        color: #888;
-    }
-
-    button.active {
+  }
+  
+  .name {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+  }
+  
+  .name:hover {
+    text-decoration: underline;
+  }
+  
+  .search-box {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+  }
+  
+  .search-box input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .coloumn {
+    position: absolute;
+    right: 5%;
+  }
+  
+  .row span {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  /* Adjust button styles for smaller size and closer proximity */
+  button.sort-btn {
+    font-size: 10px;
+    color: #555;
+    background-color: #f2f2f2;
+    padding: 2px 4px; /* Reduce padding for a smaller look */
+    margin: 2px 0; /* Bring buttons closer together */
+    border-radius: 2px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border: none;
+  }
+  
+  button.sort-btn:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  button.active {
     color: #000;
-    }
+  }
+  
+  .status-completed {
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #438b04d9;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .status-running {
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.5rem;
+    background-color: #ecf158c6;
+    text-align: center;
+    display: inline-block;
+    font-size: 12px;
+    font-family: 'Arial', sans-serif;
+  }
   </style>
+  
+
+  
   
   
 

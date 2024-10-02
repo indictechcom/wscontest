@@ -148,9 +148,10 @@
   <style scoped>
   .graph-container {
     display: flex;
+    align-self: flex-start;
     flex-direction: column;
     align-items: flex-start;
-    margin-top: 20px;
+    margin-top: 50px;
     background-color: white;
     padding: 60px;
     width: 100%;
@@ -184,6 +185,7 @@
     color: white;
     font-size: 16px;
     cursor: pointer;
+    text-wrap: nowrap;
   }
   
   button:hover {

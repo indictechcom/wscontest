@@ -16,11 +16,18 @@ import router from './router';
 
 <style scoped>
   .App{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
   }
   .top-bar{
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
   }
