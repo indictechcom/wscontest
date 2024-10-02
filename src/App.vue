@@ -1,5 +1,6 @@
 <script setup>
-import navigation from './components/navbar.vue'
+import navigation from './components/navbar.vue';
+import router from './router';
 </script>
 
 <template>
@@ -23,6 +24,7 @@ import navigation from './components/navbar.vue'
     width: 100%;
     height: 100%;
   }
+  
 </style>
 
 
