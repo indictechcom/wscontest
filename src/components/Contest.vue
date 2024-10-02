@@ -11,20 +11,23 @@
         <input type="text" v-model="searchQuery" placeholder="Search...">
     </div>
 
-      <table id="Content table">
+    <main class = 'table'>
+        <!-- <section class = 'table_header'>
+            <h1>Contests</h1>
+        </section> -->
+        <section class="table_body">
+            <table id="Content table">
         <thead>
             <tr>
-            
                 <th>
                     <div class="row">
                     <span>Name</span>
                     <div class="coloumn">
                         <button @click="sortBy('name', 'asc')" :class="{ 'active': sortField === 'name' && sortOrder === 'asc' }">&#9650;</button>
                         <button @click="sortBy('name', 'desc')" :class="{ 'active': sortField === 'name' && sortOrder === 'desc' }">&#9660;</button>
-                
                     </div>
                     </div>
-                    </th>
+                </th>
                 <th>Start date</th>
                 <th>End date</th>
                 <th>
@@ -47,10 +50,16 @@
                 </td>
                 <td>{{ row.start_date }}</td>
                 <td>{{ row.end_date }}</td>
-                <td>{{ row.status }}</td>
+                <td>
+                    <p :class="{ 'status-completed': row.status === 'completed', 'status-running': row.status === 'running' }">{{ row.status }}</p>
+                </td>
             </tr>
         </tbody>
     </table>
+    </section>
+        
+    </main>
+      
     </div>
   </template>
   
@@ -66,6 +75,9 @@
         font-size: 16px;
         cursor: pointer;
         margin-left: auto;
+        position: relative;
+        right: 4.9rem;
+        top: 2rem;
     }
 
     
@@ -80,7 +92,7 @@
     flex-direction: column;
     align-items: flex-start;
     margin: 0;
-    padding: 20px;
+    padding: 0px;
     }
 
     h2 {
@@ -92,9 +104,89 @@
     font-size: 18px;
     }
 
+    /*table, th, td{
+        padding: 1rem;
+        border-collapse: collapse;
+    }
+
+    td{
+        height: 11%;
+    }
+
+    main.table{
+        width: 82vw;
+        height: 90vh;
+        background-color: ;
+        box-shadow: 0 .4rem .8rem #0005;
+        border-radius: .8rem;
+    }
+
+    .table_header{
+        width: 100%;
+        height: 10%;
+        padding: .8rem 1rem;
+    }
+
+    .table_body{
+        width: 75%;
+        max-height: calc(70% - .8rem);
+        margin: .1rem auto;
+        border-radius: .6 rem;
+        background-color: #d6d6d622
+    }
+
+    table{
+        width: 100%;
+    }
+
+    thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: #d6d6d64f;
+    }
+
+    tbody tr:nth-child(even){
+        background-color: #206ec256;
+    }
+
+    tbody tr:hover{
+        background-color: #ffffffbc
+    }*/
+
+    thead th {
+        position: sticky;
+        top: 0;
+        left: 0;
+        background-color: #d6d6d64f;
+    }
+
+    .status-completed {
+        padding: 0.2rem 0.5rem; /* Decreased padding */
+        border-radius: 0.5rem; /* Adjusted border-radius for a smaller effect */
+        background-color: #9bef51;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .status-running {
+        padding: 0.2rem 0.5rem; /* Decreased padding */
+        border-radius: 0.5rem; /* Adjusted border-radius for a smaller effect */
+        background-color: #006b21;
+        text-align: center;
+        display: inline-block;
+    }
+
+    main.table{
+        width: 95%;
+        box-shadow: 0 .4rem .8rem #0005;
+        border-radius: .8rem;
+    }
+
     table {
     width: 100%;
     border-collapse: collapse;
+    font-family: 'Arial', sans-serif;
     }
 
     th, td {
@@ -103,6 +195,7 @@
     border-bottom: 1px solid #ddd;
     }
 
+    
     th {
     background-color: #f2f2f2;
     }
@@ -112,11 +205,11 @@
     }
 
     thead {
-    background-color: #f9f9f9;
+    background-color: #006699ea;
     }
 
     tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #00669987;
     }
 
     tbody tr:nth-child(odd) {
@@ -136,8 +229,16 @@
     }
 
     .name{
-        background-color: #00000000;
+        /* background-color: #00000000;
+        color: #007bff; */
+        background-color: transparent;
         color: #007bff;
+        border: none;
+        cursor: pointer;
+    }
+
+    .name:hover {
+        text-decoration: underline;
     }
 
     .search-box {
@@ -206,18 +307,16 @@ export default {
         {
           id: 1,
           name: 'Contest 1',
-          project: 'Project 1',
-          startDate: '2023-01-01',
-          endDate: '2023-12-31',
-          createdOn: '2023-01-01'
+          start_date: '2023-01-01',
+          end_date: '2023-12-31',
+          status: 'completed'
         },
         {
           id: 2,
           name: 'Contest 2',
-          project: 'Project 2',
-          startDate: '2023-02-01',
-          endDate: '2023-11-30',
-          createdOn: '2023-02-01'
+          start_date: '2023-02-01',
+          end_date: '2023-11-30',
+          status: 'running'
         },
       ],
       filteredRows: [],
@@ -253,14 +352,15 @@ export default {
     }
     },
     mounted() {
-        axios.get(API_URL + "/contests")
-        .then(response => {
-            this.rows = response.data;
-            this.filteredRows = this.rows;
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+        this.filteredRows = this.rows;
+        // axios.get(API_URL + "/contests")
+        // .then(response => {
+        //     this.rows = response.data;
+        //     this.filteredRows = this.rows;
+        // })
+        // .catch(error => {
+        //     console.error('Error fetching data:', error);
+        // });
     },
     watch: {
         searchQuery(newVal) {

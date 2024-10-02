@@ -17,6 +17,7 @@ import navigation from './components/navbar.vue'
   .App{
     width: 100%;
     height: 100%;
+    margin: 0px;
   }
   .top-bar{
     width: 100%;
