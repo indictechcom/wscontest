@@ -5,7 +5,8 @@
             <router-link to="/Createcontest">Create Contest</router-link>
         </button>
       <h2>Contest List</h2>
-      <p>Total Contest: {{ rows.length }}</p>
+      <p>Total Contests: {{ rows.length }}</p>
+      <br>
 
     <div class="search-box">
         <input type="text" v-model="searchQuery" placeholder="Search...">

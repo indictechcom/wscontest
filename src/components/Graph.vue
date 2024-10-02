@@ -14,6 +14,7 @@
       </div>
       <div class="instr">
         <p>All contests ID sepreated by | eg. 2|3</p>
+        <br>
       </div>
       <div style="width: 800px;"><canvas id="graph"></canvas></div>
     </div>
@@ -132,9 +133,9 @@
           },
             plugins: {
               title: {
-                display: true,
-                text: this.graphTitle
-              }
+                display: false,
+              },
+              legend: false,
             }
           }
 
@@ -150,7 +151,8 @@
     display: flex;
     align-self: flex-start;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     margin-top: 50px;
     background-color: white;
     padding: 60px;

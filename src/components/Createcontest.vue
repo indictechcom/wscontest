@@ -1,7 +1,6 @@
    <template>
     <div class="create-contest">
       <h2>Create Contest</h2>
-      <br>
       <hr />
       <br>
       <h3>Contest Name</h3>
@@ -26,6 +25,7 @@
       
 
     </div>
+    <br>
     <h2>Scoring system</h2>
     <div class="section">
       <div class="input-group">
@@ -35,8 +35,10 @@
         <br>
         <h3>From Proofread to Validate</h3>
         <br>
-        <button class="create" @click="post">Create</button>
-      </div>
+        <div class="button-container">
+      <button class="create" @click="post">Create</button>
+    </div>
+        </div>
       <div class="input-group">
         <h3>Points</h3>
         <input v-model="stov" type="text" >
@@ -52,6 +54,9 @@
   import  axios  from 'axios';
   import { ref } from 'vue';
   import API_URL from "../globals.js";
+
+  //import { useRouter } from 'vue-router';
+  //const router = useRouter();
   
     const contestInfo = ref('');
     const contestLang = ref('');
@@ -63,6 +68,7 @@
     const vtop = ref('');
 
     const post = async () => {
+      //router.push('/Createcontest');
         try {
             const response = await axios.post(API_URL + '/contest/create', {
             name: contestInfo.value,
@@ -85,6 +91,8 @@
         } catch (error) {
             console.error('Error creating contest:', error);
         }
+        
+        
     };
   </script>
   
@@ -95,7 +103,12 @@
     padding: 5rem 0;
   }
 
-  
+  h2 {
+    margin-bottom: 10px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+  }
   
   input,textarea{
   width: 100%;
@@ -104,6 +117,12 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .section {
