@@ -70,29 +70,6 @@
   }
 },
 
-      // generateGraph() {
-      //   if (this.chart) {
-      //     this.chart.destroy();
-      //   }
-      //   this.chart = new Chart(document.getElementById("myChart"), {
-      //     type: "bar",
-      //     data: {
-      //       labels: this.xValues,
-      //       datasets: [{
-      //         backgroundColor: this.barColors,
-      //         data: this.yValues
-      //       }]
-      //     },
-      //     options: {
-      //       legend: { display: false },
-      //       title: {
-      //         display: true,
-      //         text: this.graphTitle || 'World Wine Production 2018'
-      //       }
-      //     }
-      //   });
-      // }
-
 
       generateGraph(){
         const ctx = document.getElementById('graph').getContext('2d');

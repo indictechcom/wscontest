@@ -42,16 +42,6 @@ const login = async() => {
 
 <style scoped>
 
-/* #navigation{
-    width: 100%;
-    min-width: 100vw;
-    background-color: white;
-    min-height: 100vh;
-    padding-top: 60px;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-} */
 
 nav {
   top: 0;
