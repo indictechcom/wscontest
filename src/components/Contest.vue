@@ -52,7 +52,7 @@
                 <td>{{ row.start_date }}</td>
                 <td>{{ row.end_date }}</td>
                 <td>
-                    <p :class="{ 'status-completed': row.status === 'completed', 'status-running': row.status === 'running' }">{{ row.status }}</p>
+                    <p :class="{ 'status-completed': row.status === true, 'status-running': row.status === false }">{{ row.status ? 'Completed' : 'Running' }}</p>
                 </td>
             </tr>
         </tbody>
@@ -282,20 +282,20 @@ export default {
   data() {
     return {
       rows: [
-        {
-          id: 1,
-          name: 'Contest 1',
-          start_date: '2023-01-01',
-          end_date: '2023-12-31',
-          status: 'completed'
-        },
-        {
-          id: 2,
-          name: 'Contest 2',
-          start_date: '2023-02-01',
-          end_date: '2023-11-30',
-          status: 'running'
-        },
+        // {
+        //   id: 1,
+        //   name: 'Contest 1',
+        //   start_date: '2023-01-01',
+        //   end_date: '2023-12-31',
+        //   status: 'completed'
+        // },
+        // {
+        //   id: 2,
+        //   name: 'Contest 2',
+        //   start_date: '2023-02-01',
+        //   end_date: '2023-11-30',
+        //   status: 'running'
+        // },
       ],
       filteredRows: [],
       searchQuery: '',
@@ -331,14 +331,14 @@ export default {
     },
     mounted() {
         this.filteredRows = this.rows;
-        // axios.get(API_URL + "/contests")
-        // .then(response => {
-        //     this.rows = response.data;
-        //     this.filteredRows = this.rows;
-        // })
-        // .catch(error => {
-        //     console.error('Error fetching data:', error);
-        // });
+        axios.get(API_URL + "/contests")
+        .then(response => {
+            this.rows = response.data;
+            this.filteredRows = this.rows;
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
     },
     watch: {
         searchQuery(newVal) {
