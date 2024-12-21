@@ -2,7 +2,7 @@
 import  axios  from 'axios';
 import { ref } from 'vue';
 import API_URL from "../globals.js";
-const loginUrl = ref(`${API_URL}/login`);
+const loginUrl = ref(`${API_URL}/api/login`);
 
 const login = async() => {
   const auth = await axios.get(API_URL+ '/api/login');
