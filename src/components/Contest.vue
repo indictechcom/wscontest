@@ -331,14 +331,14 @@ export default {
     },
     mounted() {
         this.filteredRows = this.rows;
-        axios.get(API_URL + "/contests")
+        axios.get(API_URL + "/api/contests")
         .then(response => {
-            this.rows = response.data;
-            this.filteredRows = this.rows;
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+             this.rows = response.data;
+             this.filteredRows = this.rows;
+         })
+         .catch(error => {
+             console.error('Error fetching data:', error);
+         });
     },
     watch: {
         searchQuery(newVal) {
