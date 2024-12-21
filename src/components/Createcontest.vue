@@ -103,7 +103,6 @@ const fetchOptions = async (query) => {
     console.error("Error fetching options:", error);
   }
 };
-
 // Handle search input and make API call after debounce
 const onSearch = (searchTerm) => {
   // Clear the previous timeout
@@ -120,6 +119,7 @@ const onSearch = (searchTerm) => {
 // Post request function
 const post = async () => {
   const adminUsernames = selectedAdmins.value.map(admin => admin.label);
+  console.log("Selected admins:", adminUsernames);
   try {
     const response = await axios.post(
       globals.API_URL + "/contest/create",
