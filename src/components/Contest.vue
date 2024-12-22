@@ -275,7 +275,7 @@ th:nth-child(4), td:nth-child(4) {
 <script>
 
 import axios from 'axios';
-import API_URL from '../globals.js';
+import globals from '../globals.js';
 
 export default {
   name: 'Contest',
@@ -331,7 +331,7 @@ export default {
     },
     mounted() {
         this.filteredRows = this.rows;
-        axios.get(API_URL + "/api/contests")
+        axios.get(globals.API_URL + "/api/contests")
         .then(response => {
              this.rows = response.data;
              this.filteredRows = this.rows;
