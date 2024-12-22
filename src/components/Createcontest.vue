@@ -108,7 +108,7 @@ let pageValidationPass = ref(false);
 // API call to get dynamic options based on input
 const fetchOptions = async (query) => {
   try {
-    jsonp(`${globals.WIKIPEDIA_API_URL}?action=query&format=json&list=allusers&auprefix=${query}`, null, function (err, data) {
+    jsonp(`${globals.USER_API_URL}?action=query&format=json&list=allusers&auprefix=${query}`, null, function (err, data) {
       if (err) {
         console.error(err.message);
       } else {
@@ -201,7 +201,7 @@ const post = async () => {
     }
 
     const response = await axios.post(
-      globals.API_URL + "/contest/create",
+      globals.API_URL + "/api/contest/create",
       {
         name: contestInfo.value,
         language: contestLang.value,
