@@ -86,7 +86,6 @@ import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import jsonp from 'jsonp';
 
-// Reactive variables for form data
 let isAlertVisible = ref(false);
 let alertMessage = ref("");
 const contestInfo = ref("");
@@ -167,7 +166,11 @@ const validateIndex = () => {
 
     jsonpPromises.push(promise);
   }
-
+};
+// Handle search input and make API call after debounce
+const onSearch = (searchTerm) => {
+  // Clear the previous timeout
+  if (debounceTimer) clearTimeout(debounceTimer);
   // Wait for all JSONP calls to complete
   Promise.all(jsonpPromises)
     .then(() => {
@@ -183,6 +186,12 @@ const validateIndex = () => {
       pageValidation.value = false;
       pageValidationPass.value = false
     });
+  // Set a new timeout for the API call (debounce effect)
+  debounceTimer = setTimeout(() => {
+    if (searchTerm) {
+      fetchOptions(searchTerm); // Only fetch if there's a search term
+    }
+  }, 300); // 300ms debounce delay
 };
 
 // Post request function
@@ -199,7 +208,6 @@ const post = async () => {
       }
       return;
     }
-
     const response = await axios.post(
       globals.API_URL + "/contest/create",
       {
@@ -227,6 +235,7 @@ const post = async () => {
 </script>
 
 <style scoped>
+
 button {
   background-color: #f89500;
   color: white;
@@ -259,6 +268,7 @@ button:disabled {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
 .create-contest {
   margin-top: 7.5rem;
   color: black;
