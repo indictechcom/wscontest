@@ -206,7 +206,7 @@ const post = async () => {
         name: contestInfo.value,
         language: contestLang.value,
         start_date: startDate.value,
-        book_names: indexPages.value,
+        book_names: indexPages.value.trim().replace(/[\n\r]+/g, ''),
         end_date: endDate.value,
         admins: adminUsernames, // Send selected admins
         proofread_points: stov.value,
