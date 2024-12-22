@@ -85,7 +85,7 @@
 
 import axios from 'axios';
 import Contest from './Contest.vue';
-import API_URL from '../globals.js';
+import globals from '../globals.js';
 
 export default {
   name: 'Contestdetails',
@@ -101,7 +101,7 @@ export default {
     // const contestId = this.$route.params.id;
 
     // Make GET request using the emitted URL
-    axios.get(API_URL + "/api/contest/" + 1)
+    axios.get(globals.API_URL + "/api/contest/" + 1)
       .then(response => {
         const data = response.data;
         this.administrators = data.adminstrators;

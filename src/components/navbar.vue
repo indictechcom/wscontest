@@ -1,11 +1,11 @@
 <script setup>
 import  axios  from 'axios';
 import { ref } from 'vue';
-import API_URL from "../globals.js";
-const loginUrl = ref(`${API_URL}/api/login`);
+import globals from "../globals.js";
+const loginUrl = ref(`${globals.API_URL}/api/login`);
 
 const login = async() => {
-  const auth = await axios.get(API_URL+ '/api/login');
+  const auth = await axios.get(globals.API_URL+ '/api/login');
   if(auth.data = "login-success"){
     this.$router.push('/contest');
   }
