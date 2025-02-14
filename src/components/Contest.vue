@@ -1,10 +1,13 @@
 <template>
     <div class="contest">
         <br>
-        <button class="createbutton">
+        <div style="display: flex;justify-content: space-between; width: 100%; padding-top: 2rem;">
+          <h2>Contest List</h2>
+          <button class="createbutton">
             <router-link to="/Createcontest">Create Contest</router-link>
-        </button>
-      <h2>Contest List</h2>
+          </button>
+        </div>
+        
       <p>Total Contests: {{ rows.length }}</p>
       <br>
 
@@ -80,16 +83,15 @@
     cursor: pointer;
     margin-left: auto;
     position: relative;
-    top: 2rem;
     font-family: 'Arial', sans-serif;
   }
   
   .contest {
     width: 80vw;
+    color: #000;
     background-color: white;
     position: relative;
     min-height: 100vh;
-    padding-top: 60px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -99,7 +101,6 @@
   }
   
   h2 {
-    margin-bottom: 10px;
     font-family: 'Arial', sans-serif;
     font-weight: bold;
     font-size: 24px;

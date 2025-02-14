@@ -11,7 +11,6 @@ const login = async() => {
   }
 }
 
-
 </script>
 
 
@@ -36,7 +35,7 @@ const login = async() => {
     <a class="button" id="loginButton" :href="loginUrl">Login</a>
         </nav>
         
-        <router-view></router-view>
+        
     <!-- </div> -->
 </template>
 
