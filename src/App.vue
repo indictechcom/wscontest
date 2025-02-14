@@ -5,9 +5,11 @@ import router from './router';
 
 <template>
   <div class="App">
-    <div class="top-bar">
     <navigation />
+    <div class="top-bar">
+      <router-view></router-view>
     </div>
+    
   </div>
   
 </template>
@@ -16,8 +18,7 @@ import router from './router';
 
 <style scoped>
   .App{
-    display: flex !important;
-    align-items: center;
+    display: block !important;
     justify-content: center;
     width: 100%;
     height: 100%;
@@ -29,7 +30,7 @@ import router from './router';
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100%;
+    margin-top: 55px !important;
   }
   
 </style>
