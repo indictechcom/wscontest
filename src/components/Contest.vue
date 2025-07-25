@@ -332,7 +332,7 @@ export default {
     },
     mounted() {
         this.filteredRows = this.rows;
-        axios.get(API_URL + "/api/contests")
+        axios.get(API_URL + "/contests")
         .then(response => {
              this.rows = response.data;
              this.filteredRows = this.rows;

@@ -1,16 +1,7 @@
 <script setup>
-import  axios  from 'axios';
-import { ref } from 'vue';
-import API_URL from "../globals.js";
-const loginUrl = ref(`${API_URL}/api/login`);
+import { useUser } from '../stores/user.js'
 
-const login = async() => {
-  const auth = await axios.get(API_URL+ '/api/login');
-  if(auth.data = "login-success"){
-    this.$router.push('/contest');
-  }
-}
-
+const { isLoggedIn, username, login, logout } = useUser()
 </script>
 
 
@@ -32,7 +23,13 @@ const login = async() => {
             </ul>
             
         </div>
-    <a class="button" id="loginButton" :href="loginUrl">Login</a>
+        
+        <!-- Show user info if logged in, otherwise show login button -->
+        <div v-if="isLoggedIn" class="user-section">
+            <span class="username">Welcome, {{ username }}!</span>
+            <button class="button logout-btn" @click="logout">Logout</button>
+        </div>
+        <button v-else class="button" @click="login">Login</button>
         </nav>
         
         
@@ -132,5 +129,31 @@ nav {
 .contest:hover,
 .nav-link:hover {
   text-decoration: wavy;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username {
+  color: #ffffffcd;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: medium;
+}
+
+.logout-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
 }
 </style>

@@ -1,12 +1,21 @@
-   <template>
+<template>
     <div class="create-contest">
-      <h2>Create Contest</h2>
-      <hr />
-      <br>
-      <h3>Contest Name</h3>
-      <input v-model="contestInfo" type="text" >
-      <h3>Language (ISO Code)</h3>
-      <input v-model="contestLang" type="text" maxlength="3" >
+      <!-- Show login prompt if not authenticated -->
+      <div v-if="!canCreateContest" class="login-prompt">
+        <h2>Authentication Required</h2>
+        <p>You need to be logged in to create a contest.</p>
+        <button class="login-btn" @click="login">Login with Wikimedia</button>
+      </div>
+      
+      <!-- Show contest creation form if authenticated -->
+      <div v-else>
+        <h2>Create Contest</h2>
+        <hr />
+        <br>
+        <h3>Contest Name</h3>
+        <input v-model="contestInfo" type="text" >
+        <h3>Language (ISO Code)</h3>
+        <input v-model="contestLang" type="text" maxlength="3" >
 
       <div class="section">
       <div class="input-group">
@@ -48,12 +57,20 @@
 
     </div>
     </div>
+    <!-- End of authenticated section -->
+    </div>
   </template>
   
   <script setup>
   import  axios  from 'axios';
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import API_URL from "../globals.js";
+  import { useUser } from '../stores/user.js';
+
+  const { isLoggedIn, login } = useUser()
+
+  // Computed property to check if user can create contests
+  const canCreateContest = computed(() => isLoggedIn.value)
 
   //import { useRouter } from 'vue-router';
   //const router = useRouter();
@@ -153,5 +170,29 @@
   }
 }
 
+.login-prompt {
+  text-align: center;
+  padding: 40px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin: 20px;
+}
+
+.login-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 20px;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
   </style>
-  
+
