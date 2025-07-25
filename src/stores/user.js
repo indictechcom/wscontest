@@ -21,7 +21,7 @@ const fetchUser = async () => {
   error.value = null
   
   try {
-    const response = await axios.get(`${API_URL}/api/user`)
+    const response = await axios.get(`${API_URL}/user`)
     
     if (response.data.logged_in) {
       user.value = {
