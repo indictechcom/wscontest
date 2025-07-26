@@ -55,7 +55,7 @@
                 <td>{{ row.start_date }}</td>
                 <td>{{ row.end_date }}</td>
                 <td>
-                    <p :class="{ 'status-completed': row.status === true, 'status-running': row.status === false }">{{ row.status ? 'Completed' : 'Running' }}</p>
+                    <p :class="{ 'status-running': row.status === true, 'status-completed': row.status === false }">{{ row.status ? 'Running' : 'Completed' }}</p>
                 </td>
             </tr>
         </tbody>
@@ -350,4 +350,4 @@ export default {
     },
 }
 </script>
-  
+

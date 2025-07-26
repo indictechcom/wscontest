@@ -101,7 +101,7 @@ export default {
     // const contestId = this.$route.params.id;
 
     // Make GET request using the emitted URL
-    axios.get(API_URL + "/api/contest/" + 1)
+    axios.get(API_URL + "/contest/" + 1)
       .then(response => {
         const data = response.data;
         this.administrators = data.adminstrators;

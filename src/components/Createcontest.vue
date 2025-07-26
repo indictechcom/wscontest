@@ -87,7 +87,7 @@
     const post = async () => {
       //router.push('/Createcontest');
         try {
-            const response = await axios.post(API_URL + '/api/contest/create', {
+            const response = await axios.post(API_URL + '/contest/create', {
             name: contestInfo.value,
             language: contestLang.value,
             start_date: startDate.value,
