@@ -1,198 +1,369 @@
 <template>
-    <div class="create-contest">
+  <div class="create-wrapper">
+    <v-container class="create-container">
       <!-- Show login prompt if not authenticated -->
-      <div v-if="!canCreateContest" class="login-prompt">
-        <h2>Authentication Required</h2>
-        <p>You need to be logged in to create a contest.</p>
-        <button class="login-btn" @click="login">Login with Wikimedia</button>
-      </div>
+      <v-card v-if="!canCreateContest" class="login-card" elevation="2">
+        <v-card-title class="bg-primary text-white py-3 text-center">
+          <v-icon left class="mr-2">mdi-lock</v-icon>
+          <span class="text-h6">Authentication Required</span>
+        </v-card-title>
+        <v-card-text class="pa-6 text-center">
+          <v-icon size="64" color="primary" class="mb-4">mdi-account-circle</v-icon>
+          <p class="text-h6 mb-4">You need to be logged in to create a contest.</p>
+          <v-btn
+            color="primary"
+            variant="elevated"
+            size="large"
+            @click="login"
+            class="login-btn"
+          >
+            <v-icon left>mdi-login</v-icon>
+            Login with Wikimedia
+          </v-btn>
+        </v-card-text>
+      </v-card>
       
       <!-- Show contest creation form if authenticated -->
       <div v-else>
-        <h2>Create Contest</h2>
-        <hr />
-        <br>
-        <h3>Contest Name</h3>
-        <input v-model="contestInfo" type="text" >
-        <h3>Language (ISO Code)</h3>
-        <input v-model="contestLang" type="text" maxlength="3" >
+        <v-card class="mb-4" elevation="2">
+          <v-card-title class="bg-primary text-white py-3">
+            <v-icon left class="mr-2">mdi-plus-circle</v-icon>
+            <span class="text-h6">Create New Contest</span>
+          </v-card-title>
+          <v-card-text class="pa-4">
+            <v-row>
+              <!-- Contest Basic Info -->
+              <v-col cols="12" md="6">
+                <v-card variant="outlined" class="pa-4 h-100" hover>
+                  <div class="d-flex align-center mb-3">
+                    <v-avatar color="primary" size="32" class="mr-3">
+                      <v-icon color="white" size="small">mdi-information</v-icon>
+                    </v-avatar>
+                    <span class="text-h6 font-weight-medium">Basic Information</span>
+                  </div>
+                  
+                  <v-text-field
+                    v-model="contestInfo"
+                    label="Contest Name"
+                    variant="outlined"
+                    density="compact"
+                    class="mb-3"
+                    :rules="[v => !!v || 'Contest name is required']"
+                  />
+                  
+                  <v-text-field
+                    v-model="contestLang"
+                    label="Language (ISO Code)"
+                    variant="outlined"
+                    density="compact"
+                    maxlength="3"
+                    hint="e.g., en, fr, de"
+                    persistent-hint
+                    :rules="[v => !!v || 'Language code is required']"
+                  />
+                </v-card>
+              </v-col>
 
-      <div class="section">
-      <div class="input-group">
-        <h3>Start date</h3>
-        <input v-model="startDate" type="date" >
-        <h3>Index pages</h3>
-        <textarea v-model="indexPages" rows="5"></textarea>
-      </div>
-      <div class="input-group">
-        <h3>End date</h3>
-        <input v-model="endDate" type="date" >
-        <h3>Admins</h3>
-        <textarea v-model="admins" rows="5"></textarea>
-      </div>
+              <!-- Contest Dates -->
+              <v-col cols="12" md="6">
+                <v-card variant="outlined" class="pa-4 h-100" hover>
+                  <div class="d-flex align-center mb-3">
+                    <v-avatar color="success" size="32" class="mr-3">
+                      <v-icon color="white" size="small">mdi-calendar-range</v-icon>
+                    </v-avatar>
+                    <span class="text-h6 font-weight-medium">Contest Duration</span>
+                  </div>
+                  
+                  <v-text-field
+                    v-model="startDate"
+                    label="Start Date"
+                    type="date"
+                    variant="outlined"
+                    density="compact"
+                    class="mb-3"
+                    :rules="[v => !!v || 'Start date is required']"
+                  />
+                  
+                  <v-text-field
+                    v-model="endDate"
+                    label="End Date"
+                    type="date"
+                    variant="outlined"
+                    density="compact"
+                    :rules="[v => !!v || 'End date is required']"
+                  />
+                </v-card>
+              </v-col>
+            </v-row>
 
-      
+            <v-row class="mt-2">
+              <!-- Books Section -->
+              <v-col cols="12" md="6">
+                <v-card variant="outlined" class="pa-4 h-100" hover>
+                  <div class="d-flex align-center mb-3">
+                    <v-avatar color="info" size="32" class="mr-3">
+                      <v-icon color="white" size="small">mdi-book-multiple</v-icon>
+                    </v-avatar>
+                    <span class="text-h6 font-weight-medium">Books & Pages</span>
+                  </div>
+                  
+                  <v-textarea
+                    v-model="indexPages"
+                    label="Index Pages"
+                    variant="outlined"
+                    rows="4"
+                    hint="Enter book names or page indices, one per line"
+                    persistent-hint
+                    :rules="[v => !!v || 'At least one book/page is required']"
+                  />
+                </v-card>
+              </v-col>
 
-    </div>
-    <br>
-    <h2>Scoring system</h2>
-    <div class="section">
-      <div class="input-group">
-        <h3>Action taken</h3>
-        <br>
-        <h3>From any status to Proofread</h3>
-        <br>
-        <h3>From Proofread to Validate</h3>
-        <br>
-        <div class="button-container">
-      <button class="create" @click="post">Create</button>
-    </div>
+              <!-- Admins Section -->
+              <v-col cols="12" md="6">
+                <v-card variant="outlined" class="pa-4 h-100" hover>
+                  <div class="d-flex align-center mb-3">
+                    <v-avatar color="secondary" size="32" class="mr-3">
+                      <v-icon color="white" size="small">mdi-account-supervisor</v-icon>
+                    </v-avatar>
+                    <span class="text-h6 font-weight-medium">Administrators</span>
+                  </div>
+                  
+                  <v-textarea
+                    v-model="admins"
+                    label="Contest Administrators"
+                    variant="outlined"
+                    rows="4"
+                    hint="Enter admin usernames, one per line"
+                    persistent-hint
+                    :rules="[v => !!v || 'At least one admin is required']"
+                  />
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+
+        <!-- Scoring System Card -->
+        <v-card class="mb-4" elevation="2">
+          <v-card-title class="bg-warning text-white py-3">
+            <v-icon left class="mr-2">mdi-star</v-icon>
+            <span class="text-h6">Scoring System</span>
+          </v-card-title>
+          <v-card-text class="pa-4">
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-card variant="outlined" class="pa-4 h-100" hover>
+                  <div class="d-flex align-center mb-3">
+                    <v-avatar color="warning" size="32" class="mr-3">
+                      <v-icon color="white" size="small">mdi-file-edit</v-icon>
+                    </v-avatar>
+                    <div class="flex-grow-1">
+                      <div class="text-body-1 font-weight-medium">Proofreading Points</div>
+                      <div class="text-caption text-medium-emphasis">Points awarded for proofreading a page</div>
+                    </div>
+                  </div>
+                  
+                  <v-text-field
+                    v-model="stov"
+                    label="Points per Proofread"
+                    type="number"
+                    variant="outlined"
+                    density="compact"
+                    min="0"
+                    :rules="[v => !!v || 'Points value is required', v => v >= 0 || 'Points must be non-negative']"
+                  />
+                </v-card>
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-card variant="outlined" class="pa-4 h-100" hover>
+                  <div class="d-flex align-center mb-3">
+                    <v-avatar color="success" size="32" class="mr-3">
+                      <v-icon color="white" size="small">mdi-check-circle</v-icon>
+                    </v-avatar>
+                    <div class="flex-grow-1">
+                      <div class="text-body-1 font-weight-medium">Validation Points</div>
+                      <div class="text-caption text-medium-emphasis">Points awarded for validating a page</div>
+                    </div>
+                  </div>
+                  
+                  <v-text-field
+                    v-model="vtop"
+                    label="Points per Validation"
+                    type="number"
+                    variant="outlined"
+                    density="compact"
+                    min="0"
+                    :rules="[v => !!v || 'Points value is required', v => v >= 0 || 'Points must be non-negative']"
+                  />
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-end ga-2">
+          <v-btn
+            variant="outlined"
+            color="secondary"
+            size="large"
+            @click="$router.go(-1)"
+          >
+            <v-icon left>mdi-arrow-left</v-icon>
+            Cancel
+          </v-btn>
+          
+          <v-btn
+            color="primary"
+            variant="elevated"
+            size="large"
+            @click="post"
+            :loading="isSubmitting"
+          >
+            <v-icon left>mdi-plus</v-icon>
+            Create Contest
+          </v-btn>
         </div>
-      <div class="input-group">
-        <h3>Points</h3>
-        <input v-model="stov" type="text" >
-        <input v-model="vtop" type="text" >
       </div>
-
-
-    </div>
-    </div>
-    <!-- End of authenticated section -->
-    </div>
-  </template>
+    </v-container>
+  </div>
+</template>
   
   <script setup>
-  import  axios  from 'axios';
-  import { ref, computed } from 'vue';
-  import API_URL from "../globals.js";
-  import { useUser } from '../stores/user.js';
+import axios from 'axios';
+import { ref, computed } from 'vue';
+import API_URL from "../globals.js";
+import { useUser } from '../stores/user.js';
+import { useRouter } from 'vue-router';
 
-  const { isLoggedIn, login } = useUser()
+const { isLoggedIn, login } = useUser()
+const router = useRouter();
 
-  // Computed property to check if user can create contests
-  const canCreateContest = computed(() => isLoggedIn.value)
+// Computed property to check if user can create contests
+const canCreateContest = computed(() => isLoggedIn.value)
 
-  //import { useRouter } from 'vue-router';
-  //const router = useRouter();
+const contestInfo = ref('');
+const contestLang = ref('');
+const startDate = ref('');
+const indexPages = ref('');
+const endDate = ref('');
+const admins = ref('');
+const stov = ref('');
+const vtop = ref('');
+const isSubmitting = ref(false);
+
+const post = async () => {
+  isSubmitting.value = true;
   
-    const contestInfo = ref('');
-    const contestLang = ref('');
-    const startDate = ref('');
-    const indexPages = ref('');
-    const endDate = ref('');
-    const admins = ref('');
-    const stov = ref('');
-    const vtop = ref('');
-
-    const post = async () => {
-      //router.push('/Createcontest');
-        try {
-            const response = await axios.post(API_URL + '/contest/create', {
-            name: contestInfo.value,
-            language: contestLang.value,
-            start_date: startDate.value,
-            book_names: indexPages.value,
-            end_date: endDate.value,
-            admins: admins.value,
-            proofread_points: stov.value,
-            validate_points: vtop.value
-            },
-            {
-              withCredentials: true ,headers: {
-                'Content-Type': 'application/json'
-              }
-            }
-          );
-            
-            console.log('Response from API:', response.data);
-        } catch (error) {
-            console.error('Error creating contest:', error);
-        }
-        
-        
-    };
-  </script>
+  try {
+    const response = await axios.post(API_URL + '/contest/create', {
+      name: contestInfo.value,
+      language: contestLang.value,
+      start_date: startDate.value,
+      book_names: indexPages.value,
+      end_date: endDate.value,
+      admins: admins.value,
+      proofread_points: stov.value,
+      validate_points: vtop.value
+    },
+    {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    console.log('Response from API:', response.data);
+    
+    // Redirect to contest list on success
+    router.push('/Contestlist');
+  } catch (error) {
+    console.error('Error creating contest:', error);
+    // You could add a toast notification here
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+</script>
   
   <style scoped>
-  .create-contest {
-    margin-top: 7.5rem;
-    color: black;
-    padding: 5rem 0;
-  }
+.create-wrapper {
+  padding-top: 80px;
+  padding-bottom: 20px;
+}
 
-  h2 {
-    margin-bottom: 10px;
-    font-family: 'Arial', sans-serif;
-    font-weight: bold;
-    font-size: 24px;
+.create-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.login-card {
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 8px !important;
+}
+
+/* Card hover effects */
+.v-card[variant="outlined"]:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+}
+
+/* Consistent card styling */
+.v-card {
+  border-radius: 8px !important;
+}
+
+.v-card-title {
+  font-size: 1.1rem !important;
+  padding: 12px 16px !important;
+}
+
+/* Form validation styling */
+.v-text-field, .v-textarea {
+  margin-bottom: 8px;
+}
+
+/* Button styling */
+.login-btn {
+  text-transform: none !important;
+  font-weight: 500 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .create-container {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 960px) {
+  .create-wrapper {
+    padding-top: 80px;
   }
   
-  input,textarea{
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.section {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.create{
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-left: auto;
-    }
-
-.input-group {
-  flex: 1;
-  margin-right: 10px;
-}
-@media (min-width: 768px) {
-  input {
-    width: 80%;
-    max-width: 800px;
+  .create-container {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
-.login-prompt {
-  text-align: center;
-  padding: 40px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  margin: 20px;
+@media (max-width: 768px) {
+  .create-wrapper {
+    padding-top: 70px;
+  }
+  
+  .create-container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }
-
-.login-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 16px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 20px;
-}
-
-.login-btn:hover {
-  background-color: #0056b3;
-}
-
-  </style>
+</style>
 

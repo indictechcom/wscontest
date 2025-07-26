@@ -18,8 +18,11 @@ const { isLoggedIn, username, login, logout } = useUser()
       Wikisource contest
     </v-app-bar-title>
 
+    <!-- Spacer -->
+    <v-spacer></v-spacer>
+
     <!-- Navigation Items (centered) -->
-    <div class="flex-grow-1 d-flex justify-center">
+    <div class="nav-items-container">
       <v-btn
         variant="text"
         color="white"
@@ -45,6 +48,9 @@ const { isLoggedIn, username, login, logout } = useUser()
         Graph
       </v-btn>
     </div>
+
+    <!-- Spacer -->
+    <v-spacer></v-spacer>
 
     <!-- User Section -->
     <div class="user-section">
@@ -131,13 +137,31 @@ const { isLoggedIn, username, login, logout } = useUser()
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
+.nav-items-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
 .user-section {
   margin-right: 16px;
+  min-width: 150px;
+  flex-shrink: 0;
 }
 
 .user-btn {
   text-transform: none !important;
   font-weight: 500 !important;
+}
+
+.user-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
 }
 
 .user-card {
