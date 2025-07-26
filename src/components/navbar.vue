@@ -15,7 +15,7 @@ const { isLoggedIn, username, login, logout } = useUser()
                     <router-link to="/" class="nav-link">Home</router-link>
                 </li>
                 <li class="navbar-item">
-                    <router-link to="/Contest" class="nav-link">Contest</router-link>
+                    <router-link to="/Contestlist" class="nav-link">Contest</router-link>
                 </li>
                 <li class="navbar-item">
                     <router-link to="/Graph" class="nav-link">Graph</router-link>

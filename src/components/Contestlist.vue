@@ -279,7 +279,7 @@ import axios from 'axios';
 import API_URL from '../globals.js';
 
 export default {
-  name: 'Contest',
+  name: 'Contestlist',
   data() {
     return {
       rows: [
@@ -325,9 +325,8 @@ export default {
       this.sortField = field;
       this.sortOrder = order;
     },
-    details(next){
-        this.$router.push('/Contestdetails');
-        this.$emit('variable-passed', next);
+    details(contestId){
+        this.$router.push(`/Contestdetails/${contestId}`);
     }
     },
     mounted() {

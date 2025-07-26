@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
     "chart.js": "^4.4.3",
@@ -24,6 +25,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.5",
-    "vite": "^5.4.19"
+    "vite": "^5.4.19",
+    "vite-plugin-vuetify": "^2.1.1",
+    "vuetify": "^3.9.2"
   }
 }

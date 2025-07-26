@@ -4,14 +4,14 @@ import router from './router';
 </script>
 
 <template>
-  <div class="App">
+  <v-app>
     <navigation />
-    <div class="top-bar">
-      <router-view></router-view>
-    </div>
-    
-  </div>
-  
+    <v-main>
+      <div class="top-bar">
+        <router-view></router-view>
+      </div>
+    </v-main>
+  </v-app>
 </template>
 
   

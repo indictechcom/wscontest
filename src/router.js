@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "./components/Home.vue";
-import Contest from "./components/Contest.vue";
+import Contestlist from "./components/Contestlist.vue";
 import Graph from "./components/Graph.vue";
 import Createcontest from "./components/Createcontest.vue";
 import Contestdetails from "./components/Contestdetails.vue";
 import Judging from "./components/Judging.vue";
+import { list } from "postcss";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,10 +16,14 @@ const router = createRouter({
       name: "Home",
       component: Home,
     },
-    {
+     {
       path: "/Contest",
-      name: "Contest",
-      component: Contest,
+      redirect: "/Contestlist"
+    },
+    {
+      path: "/Contestlist",
+      name: "Contestlist",
+      component: Contestlist,
     },
     {
       path: "/Graph",
@@ -31,7 +36,7 @@ const router = createRouter({
       component: Createcontest,
     },
     {
-      path: "/Contestdetails",
+      path: "/Contestdetails/:id",
       name: "Contestdetails",
       component: Contestdetails,
     },
