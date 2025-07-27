@@ -201,7 +201,8 @@
 }
 
 .list-container {
-  max-width: 1200px;
+  max-width: 95%;
+  width: 95%;
   margin: 0 auto;
   padding-left: 24px;
   padding-right: 24px;
@@ -302,6 +303,7 @@ h1 {
 /* Responsive adjustments */
 @media (max-width: 1280px) {
   .list-container {
+    width: 96%;
     padding-left: 20px;
     padding-right: 20px;
   }
@@ -313,6 +315,7 @@ h1 {
   }
   
   .list-container {
+    width: 97%;
     padding-left: 16px;
     padding-right: 16px;
   }
@@ -326,6 +329,7 @@ h1 {
   }
   
   .list-container {
+    width: 98%;
     padding-left: 8px;
     padding-right: 8px;
   }
@@ -431,12 +435,107 @@ export default {
       this.$router.push(`/Contestdetails/${contestId}`);
     },
     formatDate(dateString) {
-      if (!dateString) return 'N/A';
-      return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
+      console.log('Formatting date:', dateString, 'Type:', typeof dateString);
+      
+      if (!dateString || dateString === null || dateString === undefined || dateString === '') {
+        console.log('Date is null/undefined/empty');
+        return 'N/A';
+      }
+      
+      try {
+        let date;
+        
+        // If it's already a Date object
+        if (dateString instanceof Date) {
+          date = dateString;
+        }
+        // If it's a string, handle different formats
+        else if (typeof dateString === 'string') {
+          const cleanedString = dateString.trim();
+          
+          // Handle DD-MM-YYYY format (most common from API)
+          if (cleanedString.includes('-')) {
+            const parts = cleanedString.split('-');
+            if (parts.length === 3) {
+              // Check if it's DD-MM-YYYY (day is 1-2 digits, month is 1-2 digits, year is 4 digits)
+              const [first, second, third] = parts;
+              if (first.length <= 2 && second.length <= 2 && third.length === 4) {
+                // DD-MM-YYYY format
+                const day = parseInt(first, 10);
+                const month = parseInt(second, 10);
+                const year = parseInt(third, 10);
+                
+                // Validate ranges
+                if (day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >= 1900) {
+                  date = new Date(year, month - 1, day); // Month is 0-indexed in JS Date
+                } else {
+                  console.log('Invalid date ranges:', day, month, year);
+                  return 'Invalid Date';
+                }
+              } else {
+                // Try ISO format or other standard format
+                date = new Date(cleanedString);
+              }
+            } else {
+              date = new Date(cleanedString);
+            }
+          }
+          // Handle DD/MM/YYYY format
+          else if (cleanedString.includes('/')) {
+            const parts = cleanedString.split('/');
+            if (parts.length === 3) {
+              const [first, second, third] = parts;
+              if (first.length <= 2 && second.length <= 2 && third.length === 4) {
+                // DD/MM/YYYY format
+                const day = parseInt(first, 10);
+                const month = parseInt(second, 10);
+                const year = parseInt(third, 10);
+                
+                if (day >= 1 && day <= 31 && month >= 1 && month <= 12 && year >= 1900) {
+                  date = new Date(year, month - 1, day);
+                } else {
+                  return 'Invalid Date';
+                }
+              } else {
+                date = new Date(cleanedString);
+              }
+            } else {
+              date = new Date(cleanedString);
+            }
+          }
+          // Handle other formats
+          else {
+            date = new Date(cleanedString);
+          }
+        }
+        // If it's a number (timestamp)
+        else if (typeof dateString === 'number') {
+          date = new Date(dateString);
+        }
+        else {
+          console.log('Unknown date format:', typeof dateString);
+          return 'Invalid Date Format';
+        }
+        
+        // Check if the date is valid
+        if (!date || isNaN(date.getTime())) {
+          console.log('Date is invalid after parsing:', date);
+          return 'Invalid Date';
+        }
+        
+        const formatted = date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        
+        console.log('Formatted date result:', formatted);
+        return formatted;
+        
+      } catch (error) {
+        console.error('Error formatting date:', error, 'Original value:', dateString);
+        return 'Date Error';
+      }
     }
   },
   mounted() {

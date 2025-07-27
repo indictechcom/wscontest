@@ -295,7 +295,8 @@ const post = async () => {
 }
 
 .create-container {
-  max-width: 1000px;
+  max-width: 95%;
+  width: 95%;
   margin: 0 auto;
   padding-left: 32px;
   padding-right: 32px;
@@ -339,6 +340,7 @@ const post = async () => {
 /* Responsive adjustments */
 @media (max-width: 1280px) {
   .create-container {
+    width: 96%;
     padding-left: 24px;
     padding-right: 24px;
   }
@@ -350,6 +352,7 @@ const post = async () => {
   }
   
   .create-container {
+    width: 97%;
     padding-left: 16px;
     padding-right: 16px;
   }
@@ -361,6 +364,7 @@ const post = async () => {
   }
   
   .create-container {
+    width: 98%;
     padding-left: 12px;
     padding-right: 12px;
   }

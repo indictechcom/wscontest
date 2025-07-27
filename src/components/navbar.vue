@@ -8,10 +8,12 @@ const { isLoggedIn, username, login, logout } = useUser()
 <template>
   <v-app-bar
     color="primary"
-    elevation="2"
+    elevation="4"
     app
     height="64"
     class="navbar-custom"
+    dense
+    :style="{ backgroundColor: '#1976d2 !important' }"
   >
     <!-- App Title -->
     <v-app-bar-title class="title-text font-weight-bold">
@@ -118,7 +120,15 @@ const { isLoggedIn, username, login, logout } = useUser()
 
 <style scoped>
 .navbar-custom {
-  z-index: 1000 !important;
+  z-index: 2000 !important;
+  background-color: #1976d2 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.navbar-custom .v-toolbar__content {
+  background-color: #1976d2 !important;
 }
 
 .title-text {
