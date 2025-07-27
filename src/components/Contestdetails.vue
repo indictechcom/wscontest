@@ -56,6 +56,50 @@
               </v-alert>
             </v-card-text>
           </v-card>
+
+          <!-- Admin Actions Card (Only for Contest Admins) -->
+          <v-card v-if="isContestAdmin" class="mb-4" elevation="2">
+            <v-card-title class="bg-warning text-white py-3">
+              <v-icon left class="mr-2">mdi-shield-crown</v-icon>
+              <span class="text-h6">Admin Actions</span>
+            </v-card-title>
+            <v-card-text class="pa-4">
+              <div class="d-flex flex-column ga-2">
+                <v-btn
+                  color="info"
+                  variant="elevated"
+                  block
+                  @click="showAnalytics = !showAnalytics"
+                  class="admin-btn"
+                >
+                  <v-icon left>mdi-chart-bar</v-icon>
+                  {{ showAnalytics ? 'Hide Analytics' : 'View Analytics' }}
+                </v-btn>
+                
+                <v-btn
+                  color="primary"
+                  variant="outlined"
+                  block
+                  @click="editContest"
+                  class="admin-btn"
+                >
+                  <v-icon left>mdi-pencil</v-icon>
+                  Edit Contest
+                </v-btn>
+                
+                <v-btn
+                  :color="contestDetails?.status ? 'error' : 'success'"
+                  variant="outlined"
+                  block
+                  @click="toggleContestStatus"
+                  class="admin-btn"
+                >
+                  <v-icon left>{{ contestDetails?.status ? 'mdi-pause' : 'mdi-play' }}</v-icon>
+                  {{ contestDetails?.status ? 'Close Contest' : 'Reopen Contest' }}
+                </v-btn>
+              </div>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
 
@@ -79,6 +123,86 @@
           <v-alert v-else type="info" variant="tonal" density="compact">
             No administrators assigned to this contest yet.
           </v-alert>
+        </v-card-text>
+      </v-card>
+
+      <!-- Analytics Card (Only visible to Contest Admins) -->
+      <v-card v-if="isContestAdmin && showAnalytics" elevation="2" class="mb-3">
+        <v-card-title class="bg-purple text-white py-3">
+          <v-icon left class="mr-2">mdi-chart-line</v-icon>
+          <span class="text-h6">Contest Analytics</span>
+        </v-card-title>
+        <v-card-text class="pa-4">
+          <v-row>
+            <v-col cols="12" md="3" v-for="(stat, index) in contestStats" :key="index">
+              <v-card variant="outlined" class="pa-3 text-center stat-card" hover>
+                <v-avatar :color="stat.color" size="48" class="mb-2">
+                  <v-icon :icon="stat.icon" color="white"></v-icon>
+                </v-avatar>
+                <div class="text-h4 font-weight-bold mb-1">{{ stat.value }}</div>
+                <div class="text-body-2 text-medium-emphasis">{{ stat.label }}</div>
+              </v-card>
+            </v-col>
+          </v-row>
+          
+          <v-row class="mt-4">
+            <v-col cols="12" md="6">
+              <v-card variant="outlined" class="pa-4">
+                <h3 class="text-h6 mb-3">Top Performers</h3>
+                <div v-if="topPerformers.length > 0">
+                  <div v-for="(performer, index) in topPerformers" :key="index" class="d-flex align-center mb-2">
+                    <v-chip color="primary" variant="elevated" size="small" class="mr-2">{{ index + 1 }}</v-chip>
+                    <div class="flex-grow-1">
+                      <div class="font-weight-medium">{{ performer.user }}</div>
+                      <div class="text-caption">{{ performer.points }} points</div>
+                    </div>
+                    <v-chip color="warning" size="small">
+                      <v-icon left size="x-small">mdi-star</v-icon>
+                      {{ performer.points }}
+                    </v-chip>
+                  </div>
+                </div>
+                <div v-else class="text-center text-medium-emphasis">
+                  No participants yet
+                </div>
+              </v-card>
+            </v-col>
+            
+            <v-col cols="12" md="6">
+              <v-card variant="outlined" class="pa-4">
+                <h3 class="text-h6 mb-3">Contest Progress</h3>
+                <div class="mb-3">
+                  <div class="d-flex justify-space-between mb-1">
+                    <span>Days Elapsed</span>
+                    <span>{{ daysElapsed }} / {{ totalDays }} days</span>
+                  </div>
+                  <v-progress-linear
+                    :model-value="progressPercentage"
+                    color="primary"
+                    height="8"
+                    rounded
+                  ></v-progress-linear>
+                </div>
+                
+                <div class="mb-3">
+                  <div class="d-flex justify-space-between mb-1">
+                    <span>Total Pages</span>
+                    <span>{{ totalPages }}</span>
+                  </div>
+                  <div class="d-flex justify-space-between mb-1">
+                    <span>Pages Worked</span>
+                    <span>{{ workedPages }}</span>
+                  </div>
+                  <v-progress-linear
+                    :model-value="pageProgressPercentage"
+                    color="success"
+                    height="8"
+                    rounded
+                  ></v-progress-linear>
+                </div>
+              </v-card>
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
 
@@ -251,6 +375,97 @@
         </v-card-text>
       </v-card>
     </v-container>
+
+    <!-- Edit Contest Dialog -->
+    <v-dialog v-model="showEditDialog" max-width="600px" persistent>
+      <v-card>
+        <v-card-title class="bg-primary text-white py-3">
+          <v-icon left class="mr-2">mdi-pencil</v-icon>
+          <span class="text-h6">Edit Contest Details</span>
+        </v-card-title>
+        
+        <v-card-text class="pa-4">
+          <v-form ref="editForm">
+            <v-text-field
+              v-model="editFormData.name"
+              label="Contest Name"
+              variant="outlined"
+              density="compact"
+              class="mb-3"
+              :rules="[v => !!v || 'Contest name is required']"
+            />
+            
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="editFormData.start_date"
+                  label="Start Date"
+                  type="date"
+                  variant="outlined"
+                  density="compact"
+                  :rules="[v => !!v || 'Start date is required']"
+                />
+              </v-col>
+              
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="editFormData.end_date"
+                  label="End Date"
+                  type="date"
+                  variant="outlined"
+                  density="compact"
+                  :rules="[v => !!v || 'End date is required']"
+                />
+              </v-col>
+            </v-row>
+            
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="editFormData.point_per_proofread"
+                  label="Points per Proofread"
+                  type="number"
+                  variant="outlined"
+                  density="compact"
+                  min="0"
+                  :rules="[v => !!v || 'Points value is required', v => v >= 0 || 'Points must be non-negative']"
+                />
+              </v-col>
+              
+              <v-col cols="12" md="6">
+                <v-text-field
+                  v-model="editFormData.point_per_validate"
+                  label="Points per Validation"
+                  type="number"
+                  variant="outlined"
+                  density="compact"
+                  min="0"
+                  :rules="[v => !!v || 'Points value is required', v => v >= 0 || 'Points must be non-negative']"
+                />
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+        
+        <v-card-actions class="pa-4">
+          <v-spacer></v-spacer>
+          <v-btn
+            variant="outlined"
+            color="secondary"
+            @click="cancelEdit"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="primary"
+            variant="elevated"
+            @click="saveContestChanges"
+          >
+            Save Changes
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -258,15 +473,29 @@
 
 import axios from 'axios';
 import API_URL from '../globals.js';
+import { useUser } from '../stores/user.js';
 
 export default {
   name: 'Contestdetails',
+  setup() {
+    const { username, isLoggedIn } = useUser();
+    return { username, isLoggedIn };
+  },
   data() {
     return {
       administrators: [],
       books: [],
       contestDetails: null,
       users: [],
+      showAnalytics: false,
+      showEditDialog: false,
+      editFormData: {
+        name: '',
+        start_date: '',
+        end_date: '',
+        point_per_proofread: 0,
+        point_per_validate: 0
+      },
       headers: [
         { title: 'User', key: 'user', sortable: true, width: '25%' },
         { title: 'Pages Worked', key: 'pages', sortable: false, width: '30%' },
@@ -343,6 +572,61 @@ export default {
           validated_count: userData.validated_count || 0
         };
       });
+    },
+    isContestAdmin() {
+      return this.isLoggedIn && this.username && this.administrators.includes(this.username);
+    },
+    contestStats() {
+      const totalParticipants = this.users.length;
+      const totalPoints = this.formattedUsers.reduce((sum, user) => sum + user.points, 0);
+      const totalProofread = this.formattedUsers.reduce((sum, user) => sum + user.proofread_count, 0);
+      const totalValidated = this.formattedUsers.reduce((sum, user) => sum + user.validated_count, 0);
+      
+      return [
+        { label: 'Participants', value: totalParticipants, icon: 'mdi-account-group', color: 'primary' },
+        { label: 'Total Points', value: totalPoints, icon: 'mdi-star', color: 'warning' },
+        { label: 'Pages Proofread', value: totalProofread, icon: 'mdi-file-document-edit', color: 'info' },
+        { label: 'Pages Validated', value: totalValidated, icon: 'mdi-check-circle', color: 'success' }
+      ];
+    },
+    topPerformers() {
+      return this.formattedUsers
+        .sort((a, b) => b.points - a.points)
+        .slice(0, 5);
+    },
+    daysElapsed() {
+      if (!this.contestDetails?.start_date) return 0;
+      const startDate = this.parseDate(this.contestDetails.start_date);
+      const today = new Date();
+      const diffTime = Math.abs(today - startDate);
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    },
+    totalDays() {
+      if (!this.contestDetails?.start_date || !this.contestDetails?.end_date) return 0;
+      const startDate = this.parseDate(this.contestDetails.start_date);
+      const endDate = this.parseDate(this.contestDetails.end_date);
+      const diffTime = Math.abs(endDate - startDate);
+      return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    },
+    progressPercentage() {
+      if (this.totalDays === 0) return 0;
+      return Math.min((this.daysElapsed / this.totalDays) * 100, 100);
+    },
+    totalPages() {
+      return this.books.length;
+    },
+    workedPages() {
+      const uniquePages = new Set();
+      this.formattedUsers.forEach(user => {
+        user.pages.forEach(page => {
+          uniquePages.add(page.page_name || page);
+        });
+      });
+      return uniquePages.size;
+    },
+    pageProgressPercentage() {
+      if (this.totalPages === 0) return 0;
+      return (this.workedPages / this.totalPages) * 100;
     }
   },
   watch: {
@@ -362,6 +646,9 @@ export default {
           this.books = data.books;
           this.contestDetails = data.contest_details;
           this.users = data.users;
+          
+          // Initialize edit form data
+          this.resetEditForm();
         })
         .catch(error => {
           console.error('API call failed:', error);
@@ -468,6 +755,142 @@ export default {
       } catch (error) {
         console.error('Error formatting date:', error, 'Original value:', dateString);
         return 'Date Error';
+      }
+    },
+    parseDate(dateString) {
+      if (!dateString) return new Date();
+      
+      try {
+        if (typeof dateString === 'string') {
+          const cleanedString = dateString.trim();
+          
+          if (cleanedString.includes('-')) {
+            const parts = cleanedString.split('-');
+            if (parts.length === 3) {
+              const [first, second, third] = parts;
+              if (first.length <= 2 && second.length <= 2 && third.length === 4) {
+                const day = parseInt(first, 10);
+                const month = parseInt(second, 10);
+                const year = parseInt(third, 10);
+                return new Date(year, month - 1, day);
+              }
+            }
+          }
+        }
+        return new Date(dateString);
+      } catch (error) {
+        return new Date();
+      }
+    },
+    editContest() {
+      // For now, we'll create a simple modal for editing contest details
+      // In production, you might want a separate edit page
+      this.showEditDialog = true;
+    },
+    async toggleContestStatus() {
+      if (!confirm(`Are you sure you want to ${this.contestDetails.status ? 'close' : 'reopen'} this contest?`)) {
+        return;
+      }
+
+      try {
+        const newStatus = !this.contestDetails.status;
+        
+        const response = await axios.patch(
+          `${API_URL}/contest/${this.$route.params.id}/status`,
+          { status: newStatus },
+          { 
+            withCredentials: true,
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        
+        if (response.data.success) {
+          this.contestDetails.status = newStatus;
+          alert(`Contest ${newStatus ? 'reopened' : 'closed'} successfully!`);
+        } else {
+          alert('Error: ' + response.data.message);
+        }
+        
+      } catch (error) {
+        console.error('Error updating contest status:', error);
+        if (error.response && error.response.data && error.response.data.message) {
+          alert('Error: ' + error.response.data.message);
+        } else {
+          alert('Error updating contest status. Please try again.');
+        }
+      }
+    },
+    async saveContestChanges() {
+      try {
+        const response = await axios.put(
+          `${API_URL}/contest/${this.$route.params.id}`,
+          {
+            name: this.editFormData.name,
+            start_date: this.editFormData.start_date,
+            end_date: this.editFormData.end_date,
+            point_per_proofread: this.editFormData.point_per_proofread,
+            point_per_validate: this.editFormData.point_per_validate
+          },
+          { 
+            withCredentials: true,
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          }
+        );
+        
+        if (response.data.success) {
+          // Update local data
+          Object.assign(this.contestDetails, this.editFormData);
+          this.showEditDialog = false;
+          alert('Contest updated successfully!');
+          
+          // Refresh the page data
+          this.fetchContestDetails(this.$route.params.id);
+        } else {
+          alert('Error: ' + response.data.message);
+        }
+        
+      } catch (error) {
+        console.error('Error updating contest:', error);
+        if (error.response && error.response.data && error.response.data.message) {
+          alert('Error: ' + error.response.data.message);
+        } else {
+          alert('Error updating contest. Please try again.');
+        }
+      }
+    },
+    cancelEdit() {
+      this.showEditDialog = false;
+      // Reset form data to original values
+      this.resetEditForm();
+    },
+    resetEditForm() {
+      if (this.contestDetails) {
+        this.editFormData = {
+          name: this.contestDetails.name,
+          start_date: this.formatDateForInput(this.contestDetails.start_date),
+          end_date: this.formatDateForInput(this.contestDetails.end_date),
+          point_per_proofread: this.contestDetails.point_per_proofread,
+          point_per_validate: this.contestDetails.point_per_validate
+        };
+      }
+    },
+    formatDateForInput(dateString) {
+      if (!dateString) return '';
+      
+      try {
+        // Parse the date and format it as YYYY-MM-DD for HTML date input
+        const date = this.parseDate(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      } catch (error) {
+        console.error('Error formatting date for input:', error);
+        return '';
       }
     }
   },
@@ -594,6 +1017,24 @@ export default {
 }
 
 .user-score-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Admin action buttons */
+.admin-btn {
+  text-transform: none !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Analytics stats cards */
+.stat-card {
+  border-radius: 8px !important;
+  transition: all 0.2s ease;
+}
+
+.stat-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
 }

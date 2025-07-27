@@ -41,14 +41,6 @@ const { isLoggedIn, username, login, logout } = useUser()
       >
         Contest
       </v-btn>
-      <v-btn
-        variant="text"
-        color="white"
-        :to="'/Graph'"
-        class="nav-btn mx-2"
-      >
-        Graph
-      </v-btn>
     </div>
 
     <!-- Spacer -->

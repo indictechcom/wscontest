@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "./components/Home.vue";
 import Contestlist from "./components/Contestlist.vue";
-import Graph from "./components/Graph.vue";
 import Createcontest from "./components/Createcontest.vue";
 import Contestdetails from "./components/Contestdetails.vue";
 import Judging from "./components/Judging.vue";
@@ -24,11 +23,6 @@ const router = createRouter({
       path: "/Contestlist",
       name: "Contestlist",
       component: Contestlist,
-    },
-    {
-      path: "/Graph",
-      name: "Graph",
-      component: Graph,
     },
     {
       path: "/Createcontest",
