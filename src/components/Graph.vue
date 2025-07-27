@@ -24,6 +24,7 @@
   import { Chart } from 'chart.js/auto';
   import { ref } from 'vue';
   import axios from 'axios';
+  import API_URL from '../globals.js';
   
   export default {
     name: 'GraphComponent',
@@ -55,7 +56,7 @@
 
         fetch: async () => {
   try {
-    const response = await axios.get('http://localhost:5000/');
+    const response = await axios.get(`${API_URL}/graph-data`);
     // xValues.value = response.data.map(item => item.label);
     // yValues.value = response.data.map(item => item.value);
     
