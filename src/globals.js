@@ -5,8 +5,9 @@ const config = {
     FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL || "http://localhost:5173"
   },
   production: {
-    API_URL: import.meta.env.VITE_API_URL || "https://your-production-backend.com",
-    FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL || "https://your-production-frontend.com"
+    // In production, both frontend and backend are served from the same Flask server
+    API_URL: import.meta.env.VITE_API_URL || "/api",  // API prefix for same origin
+    FRONTEND_URL: import.meta.env.VITE_FRONTEND_URL || ""
   }
 };
 

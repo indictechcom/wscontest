@@ -1,10 +1,8 @@
 import axios from 'axios';
-
-
-const baseUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:5001/' : 'https://wikifile-transfer.toolforge.org/';
+import API_URL from '../globals.js';
 
 export const api = axios.create({
-  baseURL: baseUrl,
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
