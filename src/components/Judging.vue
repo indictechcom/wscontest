@@ -36,7 +36,7 @@
 </template>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+@import '../assets/material-symbols.css';
 
 .outer-box {
     margin-top: 2rem; 
